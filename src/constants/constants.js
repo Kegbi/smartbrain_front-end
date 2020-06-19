@@ -1,4 +1,4 @@
-// Localhost
+//// Localhost
 // export const SIGNIN = 'http://localhost:30000/signin';
 // export const REGISTER = 'http://localhost:30000/register';
 // export const IMAGEURL = 'http://localhost:30000/imageurl';
