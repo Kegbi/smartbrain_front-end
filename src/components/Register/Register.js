@@ -1,4 +1,5 @@
 import React from 'react';
+import { REGISTER } from "../../constants/constants";
 
 class Register extends React.Component {
     constructor(props) {
@@ -23,7 +24,7 @@ class Register extends React.Component {
     }
 
     onSubmitSignIn = () => {
-        fetch('https://immense-earth-45257.herokuapp.com/register', {method: 'post', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({
+        fetch(REGISTER, {method: 'post', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({
             email: this.state.email,
             password: this.state.password,
             name: this.state.name
