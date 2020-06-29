@@ -6,10 +6,28 @@ import {
   DropdownItem,
 } from "reactstrap";
 import "./profileicon.css";
+import { LOGOUT } from "../../constants/constants";
 
 const ProfileIcon = (props) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const toggle = () => setDropdownOpen((prevState) => !prevState);
+  const routeChange = props.onRouteChange;
+  const logout = () => {
+    fetch(LOGOUT, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: window.sessionStorage.getItem("token"),
+      },
+    })
+      .then((resp) => {
+        if (resp.status === 200) {
+          window.sessionStorage.removeItem("token");
+          routeChange("signout");
+        }
+      })
+      .catch(console.log());
+  };
 
   return (
     <div className={"pa4 tc"}>
@@ -37,10 +55,7 @@ const ProfileIcon = (props) => {
           <DropdownItem style={{ outline: "none" }} onClick={props.toggleModal}>
             View profile
           </DropdownItem>
-          <DropdownItem
-            style={{ outline: "none" }}
-            onClick={() => props.onRouteChange("signout")}
-          >
+          <DropdownItem style={{ outline: "none" }} onClick={logout}>
             Sign Out
           </DropdownItem>
         </DropdownMenu>

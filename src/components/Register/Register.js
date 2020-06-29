@@ -1,14 +1,16 @@
 import React from "react";
-import { REGISTER } from "../../constants/constants";
+import { PROFILEUPD, REGISTER, SIGNIN } from "../../constants/constants";
 import "./register.css";
 
 class Register extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: "",
-      password: "",
       name: "",
+      email: "",
+      age: 0,
+      pet: "",
+      password: "",
     };
   }
 
@@ -20,8 +22,20 @@ class Register extends React.Component {
     this.setState({ email: event.target.value });
   };
 
+  onAgeChange = (event) => {
+    this.setState({ age: event.target.value });
+  };
+
+  onPetChange = (event) => {
+    this.setState({ pet: event.target.value });
+  };
+
   onPasswordChange = (event) => {
     this.setState({ password: event.target.value });
+  };
+
+  saveAuthTokenInSession = (token) => {
+    window.sessionStorage.setItem("token", token);
   };
 
   onSubmitSignUp = () => {
@@ -29,16 +43,44 @@ class Register extends React.Component {
       method: "post",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        email: this.state.email,
-        password: this.state.password,
         name: this.state.name,
+        email: this.state.email,
+        age: this.state.age,
+        pet: this.state.pet,
+        password: this.state.password,
       }),
     })
       .then((response) => response.json())
       .then((user) => {
         if (user.id) {
-          this.props.loadUser(user);
-          this.props.onRouteChange("home");
+          fetch(SIGNIN, {
+            method: "post",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              email: this.state.email,
+              password: this.state.password,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.userId && data.success === "true") {
+                this.saveAuthTokenInSession(data.token);
+                fetch(PROFILEUPD + `${data.userId}`, {
+                  method: "get",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: data.token,
+                  },
+                })
+                  .then((resp) => resp.json())
+                  .then((user) => {
+                    if (user && user.email) {
+                      this.props.loadUser(user);
+                      this.props.onRouteChange("home");
+                    }
+                  });
+              }
+            });
         }
       });
   };
@@ -79,6 +121,32 @@ class Register extends React.Component {
                   name="email-address"
                   id="email-address"
                   onChange={this.onEmailChange}
+                  onKeyPress={this.onEnterPress}
+                />
+              </div>
+              <div className="mt3">
+                <label className="db fw6 lh-copy f6" htmlFor="age">
+                  Age
+                </label>
+                <input
+                  className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100 hover-black"
+                  type="number"
+                  name="age"
+                  id="age"
+                  onChange={this.onAgeChange}
+                  onKeyPress={this.onEnterPress}
+                />
+              </div>
+              <div className="mt3">
+                <label className="db fw6 lh-copy f6" htmlFor="pet">
+                  Pet
+                </label>
+                <input
+                  className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100 hover-black"
+                  type="text"
+                  name="pet"
+                  id="pet"
+                  onChange={this.onPetChange}
                   onKeyPress={this.onEnterPress}
                 />
               </div>
