@@ -10,6 +10,10 @@
   justify-content: center;
 }
 
+.profile-modal h1 {
+  word-break: break-word;
+}
+
 .modal-close {
   height: 100%;
   font-size: 3rem;

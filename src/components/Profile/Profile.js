@@ -7,6 +7,7 @@ class Profile extends React.Component {
     super(props);
     const { user } = this.props;
     this.state = {
+      base: { name: user.name, age: user.age, pet: user.pet },
       name: user.name,
       age: user.age,
       pet: user.pet,
@@ -16,13 +17,26 @@ class Profile extends React.Component {
   onFormChange = (event) => {
     switch (event.target.name) {
       case "user-name":
-        this.setState({ name: event.target.value });
+        if (event.target.value === "") {
+          this.setState({ name: this.state.base.name });
+        } else {
+          this.setState({ name: event.target.value });
+        }
         break;
       case "user-age":
-        this.setState({ age: event.target.value });
+        if (event.target.value === "") {
+          this.setState({ age: this.state.base.age });
+        } else {
+          this.setState({ age: event.target.value });
+        }
         break;
       case "user-pet":
         this.setState({ pet: event.target.value });
+        if (event.target.value === "") {
+          this.setState({ pet: this.state.base.pet });
+        } else {
+          this.setState({ pet: event.target.value });
+        }
         break;
       default:
         return;
