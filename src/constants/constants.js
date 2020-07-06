@@ -11,5 +11,5 @@ export const SIGNIN = "https://immense-earth-45257.herokuapp.com/signin";
 export const REGISTER = "https://immense-earth-45257.herokuapp.com/register";
 export const IMAGEURL = "https://immense-earth-45257.herokuapp.com/imageurl";
 export const IMAGE = "https://immense-earth-45257.herokuapp.com/image";
-export const PROFILEUPD = "https://immense-earth-45257.herokuapp.com/profile/:";
+export const PROFILEUPD = "https://immense-earth-45257.herokuapp.com/profile/";
 export const LOGOUT = "https://immense-earth-45257.herokuapp.com/logout/";
